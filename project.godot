@@ -33,8 +33,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Test Game"
-run/main_scene="res://src/Scenes/Level.tscn"
+run/main_scene="res://src/Scenes/Start and End Scenes/Title Screen.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+PlayerStats="*res://src/Player Statistics/Player Stats.tscn"
 
 [gui]
 

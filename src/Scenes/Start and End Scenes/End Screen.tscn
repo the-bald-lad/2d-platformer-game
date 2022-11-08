@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/background.png" type="Texture" id=1]
+[ext_resource path="res://src/UI Stuff/Level Change Button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/UI Stuff/Exit_Button.gd" type="Script" id=3]
+[ext_resource path="res://src/UI Stuff/Start_Button.gd" type="Script" id=4]
+[ext_resource path="res://src/UI Stuff/Exit_Button.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/UI Stuff/Title.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/font_title.tres" type="DynamicFont" id=7]
+
+[node name="End Screen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="Game Title" parent="." instance=ExtResource( 6 )]
+margin_left = -321.0
+margin_top = 64.8
+margin_right = 320.0
+margin_bottom = 107.8
+custom_fonts/font = ExtResource( 7 )
+text = "You have finished the game!"
+
+[node name="Score and death" parent="." instance=ExtResource( 6 )]
+margin_left = -318.0
+margin_top = 137.8
+margin_right = 323.0
+margin_bottom = 180.8
+custom_fonts/font = ExtResource( 7 )
+text = "Score: %s
+Deaths: %s"
+
+[node name="Button Container" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -125.5
+margin_top = -64.5
+margin_right = 125.5
+margin_bottom = 64.5
+
+[node name="Restart" type="Button" parent="Button Container" instance=ExtResource( 2 )]
+margin_right = 251.0
+margin_bottom = 62.0
+size_flags_vertical = 3
+text = "Play Again"
+script = ExtResource( 4 )
+next_scene_path = "res://src/Scenes/Start and End Scenes/Title Screen.tscn"
+
+[node name="Exit" type="Button" parent="Button Container" instance=ExtResource( 5 )]
+margin_top = 66.0
+margin_right = 251.0
+margin_bottom = 129.0
+size_flags_vertical = 3
+text = "Exit Game"
+script = ExtResource( 3 )
+
+[connection signal="button_up" from="Button Container/Restart" to="Button Container/Restart" method="_on_Start_button_up"]
+[connection signal="button_up" from="Button Container/Exit" to="Button Container/Exit" method="_on_Exit_button_up"]

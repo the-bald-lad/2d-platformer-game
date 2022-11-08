@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/UI Stuff/Exit_Button.gd" type="Script" id=1]
+
+[node name="Exit" type="Button"]
+margin_right = 251.0
+margin_bottom = 30.0
+size_flags_vertical = 3
+text = "Exit Game"
+script = ExtResource( 1 )
+
+[connection signal="button_up" from="." to="." method="_on_Exit_button_up"]

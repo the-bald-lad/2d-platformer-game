@@ -3,17 +3,15 @@ extends RigidBody2D
 # Onready Variables
 onready var anim_player: AnimationPlayer = get_node("AnimationPlayer")
 
-# Constant Variables
-const FPS: int = 60 
-
 # Other Variables
 var frame:   int = 0
 var seconds: int = 10
-
+var FPS: float
 
 # Happens every frame
 func _physics_process(_delta):
-	if frame > (FPS*seconds): # After 10 seconds, bullet will be removed from processing queue
+	FPS = Engine.get_frames_per_second()
+	if round(frame) > (FPS*seconds): # After the amount of seconds stated above, bullet will be removed from processing queue
 		anim_player.play("Fade")
 	else:
 		frame += 1

@@ -1,5 +1,5 @@
 extends Actor
 class_name position
 
-# Variables for inherritance
+# Variables for inheritance
 var pos: = Vector2.ZERO

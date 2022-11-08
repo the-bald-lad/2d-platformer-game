@@ -9,6 +9,5 @@ const FLOOR_NORMAL: = Vector2.UP
 export var speed:   = Vector2(300.0, 1000.0)
 export var gravity: = 3000.0
 
-# Setting an empty variable for velocity
 # Other inherrited variables
-var velocity: = Vector2.ZERO
+var velocity: = Vector2.ZERO # Setting an empty variable for velocity

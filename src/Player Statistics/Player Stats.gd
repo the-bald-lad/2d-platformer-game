@@ -35,11 +35,13 @@ var pause_menu = preload("res://src/Settings and Pause Menus/Pause_Menu.tscn") #
 var pause_key  = KEY_ESCAPE # Key for pausing the game
 
 # Variables for Saving Game
-var encryption_password: String = "a"
+var encryption_password: String
 
 const dir_path: String  = "user://saves/"
 
-var save_path: String  = dir_path + "save.dat"
+var file_ext: String  = ".dat"
+var save_path: String = dir_path + "tmp" + file_ext
+
 var level_path: String = dir_path + "new_level.tscn"
 
 # Happens when game is first launced
@@ -116,24 +118,27 @@ func save_game() -> String:
 	# Directory creation and deletion
 	var save_dir: Directory = Directory.new() # Creates new Directory type
 	
+	# For getting the current time
+	var current_time: String = str(OS.get_unix_time())
+
 	# For file reading and writing
 	var file: File = File.new() # Creates new File type
 	var level_file: = File.new() # Creates second File type
-	
+
 	# For saving current level and nodes
 	var level: PackedScene = PackedScene.new() # Makes empty PackedScene type
-	
+
 	var pack_error = level.pack(get_tree().get_current_scene()) # Packs current level into PackedScene
-	
+
 	if pack_error != OK:
 		error_occured("Pack", pack_error) # Closes game if pack did not work correctly
-	
+
 	if level_file.file_exists(level_path):
 		# warning-ignore:return_value_discarded
 		save_dir.remove(level_path) # Removes old packed level from the saves directory
-	
+
 	var save_error = ResourceSaver.save(level_path, level) # Saves level to the level save location
-	
+
 	if save_error != OK:
 		error_occured("Save", save_error) # Closes game if save did not work correctly
 
@@ -154,6 +159,10 @@ func save_game() -> String:
 	if !dir.dir_exists(dir_path): # Checking if the save directory exists
 		dir.make_dir_recursive(dir_path) # Recursive means that each folder will be made along the path if needed
 
+	save_path = dir_path + current_time + file_ext
+	
+	encryption_password = current_time
+
 	# Saving game with encryption so player cannot cheat and change values in save file
 	var code: = file.open_encrypted_with_pass(save_path, File.WRITE, encryption_password)
 
@@ -169,7 +178,11 @@ func load_game() -> String:
 	var file: = File.new() # Creates new file type
 	var new_load_data: Dictionary # Creates new dictionary type
 	var text: String # Creates new String variable
-	
+
+	save_path           = dir_path + get_latest_enc_pass(dir_path) + file_ext
+	encryption_password = get_latest_enc_pass(dir_path)
+
+
 	if file.file_exists(save_path): # Checks save file exists
 		var code = file.open_encrypted_with_pass(save_path, File.READ, encryption_password) # Decrypts and opens file 
 
@@ -201,6 +214,38 @@ func load_game() -> String:
 func error_occured(thing, error) -> void:
 	printerr("%s: had error %s" % ([thing, error])) # Outputs error with passed in values
 	get_tree().quit(-1) # Quits with error code
+
+func get_latest_enc_pass(path) -> String:
+	var files = [] # For files in directory
+	var nums  = [] # For file names
+
+	var enc_dir = Directory.new() # For accessing directory files in a listed method
+
+	var out: int = 0 # Output variable
+
+	dir.open(path) # Opens path that is passed through
+	dir.list_dir_begin() # Starts listing directory
+
+	# For getting all files from directory
+	while true:
+		var file = dir.get_next() # Gets next file in file list
+		if file == "": # Checks if end of directory
+			break # Stops loop
+		elif not file.begins_with("."): # Removes checking hidden files
+			files.append(file) # Appends file to file list
+
+	enc_dir.list_dir_end() # For stopping the list of directory files
+
+	# For getting numbers from file names
+	for file in files:
+		nums.append(int(file.split(".")[0])) # Only gets name of file, removes file ext
+
+	# Sets output to be the lastest save
+	for i in nums:
+		if i > out:
+			out = i
+
+	return str(out) # Returns latest save
 
 # Sets level score when called 
 func set_score(value: int) -> void:

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "
+"
+
+[node name="CheckButton" type="CheckButton"]
+margin_right = 448.0
+margin_bottom = 40.0
+align = 1
+script = SubResource( 1 )
+
+[connection signal="toggled" from="." to="." method="_on_CheckButton_toggled"]

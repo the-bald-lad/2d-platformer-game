@@ -157,6 +157,9 @@ position = Vector2( 970, 189 )
 [node name="Colectable29" parent="." instance=ExtResource( 5 )]
 position = Vector2( 1294, 183 )
 
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 100
+
 [connection signal="body_entered" from="Fall_Check" to="Chalenge mode Player" method="_on_Fall_Check_body_entered"]
 
 [editable path="Chalenge mode Player"]

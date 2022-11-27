@@ -133,3 +133,6 @@ position = Vector2( 919, -603 )
 
 [node name="Colectable10" parent="." instance=ExtResource( 5 )]
 position = Vector2( 284, -495 )
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 100

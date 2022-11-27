@@ -1,0 +1,113 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/UI Stuff/Level Change Button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/font_title.tres" type="DynamicFont" id=2]
+[ext_resource path="res://src/UI Stuff/Title.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/background.png" type="Texture" id=4]
+[ext_resource path="res://src/UI Stuff/Volume Slider.tscn" type="PackedScene" id=5]
+
+[node name="Control" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 4 )
+expand = true
+
+[node name="Game Title" parent="." instance=ExtResource( 3 )]
+margin_left = -88.0
+margin_top = 40.8
+margin_right = 96.0
+margin_bottom = 83.8
+custom_fonts/font = ExtResource( 2 )
+text = "Settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -242.0
+margin_top = -140.0
+margin_right = 280.0
+margin_bottom = 141.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_right = 522.0
+margin_bottom = 197.0
+
+[node name="Volume" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 340.0
+margin_bottom = 43.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_fonts/font = ExtResource( 2 )
+text = "Master Volume"
+
+[node name="Master" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 47.0
+margin_right = 522.0
+margin_bottom = 63.0
+
+[node name="Music Label" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 67.0
+margin_right = 315.0
+margin_bottom = 110.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_fonts/font = ExtResource( 2 )
+text = "Music Volume"
+
+[node name="Music" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 114.0
+margin_right = 522.0
+margin_bottom = 130.0
+audio_bus = "Music"
+
+[node name="Sfx" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 134.0
+margin_right = 278.0
+margin_bottom = 177.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+custom_fonts/font = ExtResource( 2 )
+text = "SFX Volume"
+
+[node name="Sfx2" parent="VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+margin_top = 181.0
+margin_right = 522.0
+margin_bottom = 197.0
+audio_bus = "Sfx"
+
+[node name="Keybinds Inputs" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 201.0
+margin_right = 522.0
+margin_bottom = 239.0
+text = "Change Keybindings"
+next_scene_path = "res://src/Input_Mapping/Input.tscn"
+
+[node name="Back" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 243.0
+margin_right = 522.0
+margin_bottom = 281.0
+text = "Back to menu"
+next_scene_path = "res://src/Scenes/Start and End Scenes/Title Screen.tscn"

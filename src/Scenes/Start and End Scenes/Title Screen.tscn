@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/background.png" type="Texture" id=1]
 [ext_resource path="res://src/UI Stuff/Exit_Button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Scenes/Start and End Scenes/Title Screen.gd" type="Script" id=3]
 [ext_resource path="res://src/UI Stuff/Level Change Button.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/UI Stuff/Title.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/font_title.tres" type="DynamicFont" id=7]
@@ -9,6 +10,7 @@
 [node name="Title Screen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 3 )
 
 [node name="Background" type="TextureRect" parent="."]
 anchor_right = 1.0
@@ -33,21 +35,30 @@ margin_top = -64.5
 margin_right = 125.5
 margin_bottom = 64.5
 
-[node name="Start" parent="Button Container" instance=ExtResource( 4 )]
+[node name="Start Game" parent="Button Container" instance=ExtResource( 4 )]
+margin_bottom = 23.0
 next_scene_path = "res://src/Scenes/Level.tscn"
 
-[node name="Settings" parent="Button Container" instance=ExtResource( 4 )]
-margin_top = 33.0
-margin_bottom = 62.0
-text = "Settings"
-next_scene_path = "res://src/Settings Menu/Settings.tscn"
+[node name="Continue" type="Button" parent="Button Container"]
+margin_top = 27.0
+margin_right = 251.0
+margin_bottom = 47.0
+text = "Continue Save Game"
 
 [node name="Load" parent="Button Container" instance=ExtResource( 4 )]
-margin_top = 66.0
-margin_bottom = 95.0
+margin_top = 51.0
+margin_bottom = 74.0
 text = "Load"
-next_scene_path = "res://src/Settings Menu/Settings.tscn"
+next_scene_path = "res://src/Loading Saves/Load_Saves.tscn"
+
+[node name="Settings" parent="Button Container" instance=ExtResource( 4 )]
+margin_top = 78.0
+margin_bottom = 101.0
+text = "Settings"
+next_scene_path = "res://src/Settings and Pause Menus/Settings.tscn"
 
 [node name="Exit" parent="Button Container" instance=ExtResource( 2 )]
-margin_top = 99.0
+margin_top = 105.0
 margin_bottom = 129.0
+
+[connection signal="button_up" from="Button Container/Continue" to="." method="_on_Continue_button_up"]

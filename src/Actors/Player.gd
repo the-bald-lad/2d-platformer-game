@@ -1,4 +1,5 @@
 extends position
+class_name Player
 
 # Global Variables
 var direction:      = Vector2.ZERO
@@ -21,7 +22,7 @@ func _physics_process(_delta):
 		get_position() # Getting player position 
 	
 	# Will return a bool with whether or not the player has stopped jumpingp
-	var is_jump_interrupted: = Input.is_action_just_released("Jump") and velocity.y < 0.0 
+	var is_jump_interrupted: = Input.is_action_just_released("jump") and velocity.y < 0.0 
 	
 	direction = get_direction() # calls function to calculate player direction
 	velocity  = calculate_velocity(
@@ -61,8 +62,8 @@ func get_position():
 # In order to calculate the movement of the player
 func get_direction() -> Vector2:
 	return Vector2(
-		Input.get_action_strength("Move_Right") - Input.get_action_strength("Move_Left"), # Calculates diection, with 1 being right and -1 being left
-		-1.0 if Input.is_action_just_pressed("Jump") and is_on_floor() else 1.0 # Whether or not the player is jumping
+		Input.get_action_strength("right") - Input.get_action_strength("left"), # Calculates diection, with 1 being right and -1 being left
+		-1.0 if Input.is_action_just_pressed("jump") and is_on_floor() else 1.0 # Whether or not the player is jumping
 	)
 
 # To calculate how far the player should move

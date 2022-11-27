@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://src/UI Stuff/Start_Button.gd" type="Script" id=1]
+[ext_resource path="res://src/UI Stuff/Change_Scene.gd" type="Script" id=1]
 
 [node name="Change Button" type="Button"]
 margin_right = 251.0

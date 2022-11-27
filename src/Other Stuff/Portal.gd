@@ -9,8 +9,7 @@ onready var anim_player: AnimationPlayer = $AnimationPlayer # Gets animation nod
 export var next_scene: PackedScene # For setting the next scene
 
 # Other Variables
-var tmp
-
+var _tmp
 
 # Giving warning to add a destination to the portal. 
 func _get_configuration_warning() -> String:
@@ -24,8 +23,8 @@ func _on_body_entered(_body) -> void:
 func teleport() -> void:
 	get_node("CollisionShape2D").set_deferred("disabled", true)
 	
-	PlayerStats.update_total_score(1)
+	PlayerStats.update_total_score(0)
 	
 	anim_player.play("Fade_In") # Plays fade animation
 	yield(anim_player, "animation_finished") # Returns values but does not cease operation
-	tmp = get_tree().change_scene_to(next_scene) # Changes scene to the specified scene
+	_tmp = get_tree().change_scene_to(next_scene) # Changes scene to the specified scene

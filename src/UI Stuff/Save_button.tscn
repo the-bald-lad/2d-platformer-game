@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/UI Stuff/Save_button.gd" type="Script" id=1]
+
+[node name="Save" type="Button"]
+margin_top = 225.0
+margin_right = 499.0
+margin_bottom = 245.0
+script = ExtResource( 1 )
+
+[connection signal="button_up" from="." to="." method="_on_Save_button_up"]

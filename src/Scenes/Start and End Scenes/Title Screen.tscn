@@ -37,7 +37,7 @@ margin_bottom = 64.5
 
 [node name="Start Game" parent="Button Container" instance=ExtResource( 4 )]
 margin_bottom = 23.0
-next_scene_path = "res://src/Scenes/Level.tscn"
+next_scene_path = "res://src/Scenes/Level_0.tscn"
 
 [node name="Continue" type="Button" parent="Button Container"]
 margin_top = 27.0

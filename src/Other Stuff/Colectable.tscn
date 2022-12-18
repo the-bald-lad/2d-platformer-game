@@ -91,7 +91,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="Colectable" type="Area2D"]
+[node name="Collectable" type="Area2D"]
 collision_layer = 4
 script = ExtResource( 2 )
 

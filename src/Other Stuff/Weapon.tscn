@@ -11,7 +11,7 @@ extents = Vector2( 7.5, 6.5 )
 [node name="Weapon" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
-[node name="Bumper" type="Sprite" parent="."]
+[node name="weapon" type="Sprite" parent="."]
 position = Vector2( 0, -1.90735e-06 )
 rotation = 1.5708
 scale = Vector2( 0.325566, 0.317731 )

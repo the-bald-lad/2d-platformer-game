@@ -74,7 +74,7 @@ margin_right = 1922.0
 margin_bottom = 961.0
 texture = ExtResource( 4 )
 
-[node name="Portal3" parent="." instance=ExtResource( 8 )]
+[node name="Entrance" parent="." instance=ExtResource( 8 )]
 position = Vector2( 1562, -363 )
 
 [node name="TileMap" type="TileMap" parent="."]

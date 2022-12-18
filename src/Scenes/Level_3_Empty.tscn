@@ -88,7 +88,7 @@ gravity = 2000.0
 position = Vector2( 1372, -345 )
 next_scene = ExtResource( 5 )
 
-[node name="Portal2" parent="." instance=ExtResource( 8 )]
+[node name="Entrance" parent="." instance=ExtResource( 8 )]
 position = Vector2( 1563, -343 )
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]

@@ -56,7 +56,8 @@ func change_keybinds(key, value):
 	keybinds[key] = value # Makes the key passed through be the value that is passed through
 	for i in keybinds.keys(): # Loops through each key in the keybinds dictionary
 		if i != key and value != null and keybinds[i] == value: # Checks if key is already assigned to an action
-			keybinds[i]      = null # Sets values to null
+			# Unassigning values from repeated key
+			keybinds[i]      = null
 			buttons[i].value = null
 			buttons[i].text  = "Unassigned"
 

@@ -8,31 +8,36 @@ signal bullets_updated # For when a bullet is fired
 signal reseting # For when the level score needs to go back to 0
 
 # Global Player Statistics
-var total_score: int = 0 setget update_total_score # Total score of the game
-var level_score: int = 0 setget set_score # Score for the current level, is added to total when level is complete
-var deaths:      int = 0 setget set_death # Total amounts of player deaths
-var bullets:     int = 8 setget set_bullets # Amount of bullets for player
+var total_score: int = 0 setget update_total_score 
+var level_score: int = 0 setget set_score 
+var deaths:      int = 0 setget set_death 
+var bullets:     int = 8 setget set_bullets
 
-var next_level: String = "res://src/Scenes/Level.tscn"
+var next_level: String = "res://src/Scenes/Level_0.tscn"
 
 # Variables for HUD
-var levels_list = ["res://src/Scenes/Level.tscn", 
-				   "res://src/Scenes/Level_2.tscn", 
-				   "res://src/Scenes/Level_3.tscn",
-				   "res://src/Scenes/Level_3_Empty.tscn",
-				   "res://src/Scenes/Wall_Level.tscn"]
+# For checking where the HUD should be placed onto the screen
+var levels_list: Array = ["res://src/Scenes/Level_0.tscn", 
+						  "res://src/Scenes/Level_2.tscn", 
+						  "res://src/Scenes/Level_3.tscn",
+						  "res://src/Scenes/Level_3_Empty.tscn",
+						  "res://src/Scenes/Wall_Level.tscn",
+						  "res://new_level.tscn",
+						  "user://saves/new_level.tscn",]
 
 # Variables for Keybinding
-var dir = Directory.new() # For copying files to other locations
-var resource_keybind_filepath = "res://keybinds.ini" # For default keybinds
-var keybind_filepath          = "user://keybinds.ini" # For current keybinds
+var dir: Directory = Directory.new() # For copying files to other locations
+
+var resource_keybind_filepath: String = "res://keybinds.ini" # For default keybinds
+var keybind_filepath:          String = "user://keybinds.ini" # For current keybinds
+
 var configfile # For setting the game configurations
 
-var keybinds = {} # For storing the keybinds in use
+var keybinds: Dictionary = {} # For storing the keybinds in use
 
 # Variables for the pause menu
-var pause_menu = preload("res://src/Settings and Pause Menus/Pause_Menu.tscn") # Allows for easy access to the pause menu
-var pause_key  = KEY_ESCAPE # Key for pausing the game
+var pause_menu: Resource = preload("res://src/Settings and Pause Menus/Pause_Menu.tscn") # Allows for easy access to the pause menu
+var pause_key            = KEY_ESCAPE # Key for pausing the game
 
 # Variables for Saving Game
 var encryption_password: String
@@ -42,7 +47,7 @@ const dir_path: String  = "user://saves/"
 var file_ext: String  = ".dat"
 var save_path: String = dir_path + "tmp" + file_ext
 
-var level_path: String = dir_path + "new_level.tscn"
+var level_path: String = "new_level.tscn" # For loading a saved packed scene
 
 # Happens when game is first launced
 func _ready() -> void:
@@ -69,7 +74,7 @@ func _ready() -> void:
 	
 	set_key_binds() # Calls function to set keybinds to the game
 
-# Happens Every Frame
+# Is called every frame, delta variable is time imbetween frames
 func _physics_process(_delta) -> void:
 	if get_tree().current_scene.filename in levels_list: # Checks for if current scene is in list of levels
 		get_node("Hud/Label").text = "Ammo: %s" % (bullets) # Places HUD onto screen
@@ -122,8 +127,8 @@ func save_game() -> String:
 	var current_time: String = str(OS.get_unix_time())
 
 	# For file reading and writing
-	var file: File = File.new() # Creates new File type
-	var level_file: = File.new() # Creates second File type
+	var file: File       = File.new() # Creates new File type
+	var level_file: File = File.new() # Creates second File type
 
 	# For saving current level and nodes
 	var level: PackedScene = PackedScene.new() # Makes empty PackedScene type
@@ -157,16 +162,18 @@ func save_game() -> String:
 	}
 
 	if !dir.dir_exists(dir_path): # Checking if the save directory exists
+		# warning-ignore:return_value_discarded
 		dir.make_dir_recursive(dir_path) # Recursive means that each folder will be made along the path if needed
 
+	# Updating save path and encryption password
 	save_path = dir_path + current_time + file_ext
-	
-	encryption_password = current_time
+
+	encryption_password = current_time # Updates encryption password
 
 	# Saving game with encryption so player cannot cheat and change values in save file
 	var code: = file.open_encrypted_with_pass(save_path, File.WRITE, encryption_password)
 
-	if code != OK:
+	if code != OK: # Checks if opening file was opened correctly
 		error_occured(save_path, code) # Closes game if file could not be saved
 	file.store_var(save_data) # Stores dictionary into encrypted file
 
@@ -179,6 +186,7 @@ func load_game() -> String:
 	var new_load_data: Dictionary # Creates new dictionary type
 	var text: String # Creates new String variable
 
+	# Updating opening values
 	save_path           = dir_path + get_latest_enc_pass(dir_path) + file_ext
 	encryption_password = get_latest_enc_pass(dir_path)
 
@@ -191,8 +199,7 @@ func load_game() -> String:
 		new_load_data = file.get_var() # Gets dictionary from file
 
 		# Setting values to saved values
-		next_level = new_load_data["Current_Level"]["New_Level_Path"] # Gets new level path
-
+		next_level  = new_load_data["Current_Level"]["Level_Path"] # Gets new level path
 		bullets     = new_load_data["Player"]["Ammo"] # Sets ammo to saved amount
 		total_score = new_load_data["Player"]["Total_Score"] # Sets total score to saved amount
 		level_score = new_load_data["Player"]["Level_Score"] # Sets level score to saved amount
@@ -211,8 +218,8 @@ func load_game() -> String:
 	return text # Returns text for button text to be changed
 
 # If an error happens
-func error_occured(thing, error) -> void:
-	printerr("%s: had error %s" % ([thing, error])) # Outputs error with passed in values
+func error_occured(thing_that_has_gone_wrong, error) -> void:
+	printerr("%s: had error %s" % ([thing_that_has_gone_wrong, error])) # Outputs error with passed in values
 	get_tree().quit(-1) # Quits with error code
 
 func get_latest_enc_pass(path) -> String:
@@ -221,9 +228,12 @@ func get_latest_enc_pass(path) -> String:
 
 	var enc_dir = Directory.new() # For accessing directory files in a listed method
 
-	var out: int = 0 # Output variable
+	var out: int = 0 # Output variable, will be returned from function
 
+	#warning-ignore:return_value_discarded
 	dir.open(path) # Opens path that is passed through
+
+	# warning-ignore:return_value_discarded
 	dir.list_dir_begin() # Starts listing directory
 
 	# For getting all files from directory
@@ -231,7 +241,7 @@ func get_latest_enc_pass(path) -> String:
 		var file = dir.get_next() # Gets next file in file list
 		if file == "": # Checks if end of directory
 			break # Stops loop
-		elif not file.begins_with("."): # Removes checking hidden files
+		elif not file.begins_with("."): # Does not add hidden files to list
 			files.append(file) # Appends file to file list
 
 	enc_dir.list_dir_end() # For stopping the list of directory files

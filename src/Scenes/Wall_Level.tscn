@@ -90,7 +90,7 @@ position = Vector2( 163, -368 )
 [node name="Camera2D" parent="Chalenge mode Player" index="2"]
 zoom = Vector2( 0.4, 0.4 )
 
-[node name="Enter Portal" parent="." instance=ExtResource( 8 )]
+[node name="Entrance" parent="." instance=ExtResource( 8 )]
 position = Vector2( 161, -366 )
 
 [node name="Portal" parent="." instance=ExtResource( 7 )]

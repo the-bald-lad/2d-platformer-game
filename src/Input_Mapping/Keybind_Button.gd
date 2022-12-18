@@ -29,4 +29,4 @@ func _toggled(button_pressed):
 	if button_pressed: # Checks to see if the button has been pressed down
 		waiting_input = true # Sets variable to true
 		set_text("Press Any Key") # Changes button text
-	get_parent().get_parent().get_node("Save Config").text = "Save Keybinds" # Sets save keybinds button back to save keybinds
+	get_tree().current_scene.get_node("Save Config").text = "Save Keybinds" # Sets save keybinds button back to save keybinds

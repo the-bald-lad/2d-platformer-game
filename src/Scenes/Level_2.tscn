@@ -134,7 +134,7 @@ position = Vector2( 1558, 523 )
 [node name="Michael" parent="." instance=ExtResource( 3 )]
 position = Vector2( 759, -113 )
 
-[node name="Portal2" parent="." instance=ExtResource( 8 )]
+[node name="Entrance" parent="." instance=ExtResource( 8 )]
 position = Vector2( 199, 395 )
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]

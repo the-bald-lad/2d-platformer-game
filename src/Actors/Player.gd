@@ -18,12 +18,13 @@ export var stomp_impulse: = 700.0
 
 # Function called every frame
 func _physics_process(_delta):
+	print(get_tree().current_scene.filename)
 	if get_pos_mode == true:
 		get_position() # Getting player position 
-	
+
 	# Will return a bool with whether or not the player has stopped jumpingp
 	var is_jump_interrupted: = Input.is_action_just_released("jump") and velocity.y < 0.0 
-	
+
 	direction = get_direction() # calls function to calculate player direction
 	velocity  = calculate_velocity(
 		velocity, # For the amount the player is already moving
@@ -32,7 +33,7 @@ func _physics_process(_delta):
 		is_jump_interrupted # For if the player is already jumping
 		) # Calculates player velocity
 	velocity  = move_and_slide(velocity, FLOOR_NORMAL) # Function to move player
-	
+
 	set_rotation(rotation_amount) # Sets rotation of sprite every frame
 
 # Setting rotation so that the sprite is locked to facing the correct way
@@ -73,21 +74,26 @@ func calculate_velocity(
 	speed: Vector2,
 	is_jump_interrupted: bool
 ) -> Vector2:
-	var new_velocity:   = linear_velocity
-	new_velocity.x      = speed.x * new_direction.x # calculating how much to move the x axis
-	new_velocity.y     += gravity * get_physics_process_delta_time() # Compensating for frame delay
-	
+	var new_velocity: = linear_velocity
+	new_velocity.x    = speed.x * new_direction.x # calculating how much to move the x axis
+	new_velocity.y   += gravity * get_physics_process_delta_time() # Compensating for frame delay
+
+	# Checks if player is jumping
 	if new_direction.y == -1.0:
-		new_velocity.y  = speed.y * new_direction.y
-	
+		new_velocity.y = speed.y * new_direction.y
+
+	# Checks if jump has ended premeturly
 	if is_jump_interrupted:
-		new_velocity.y  = 0.0 # Stops jump if button is released before full jump
+		new_velocity.y = 0.0 # Stops jump if button is released before full jump
 	return new_velocity
 
 # So that the level can be reset
 func reset() -> void:
-	PlayerStats.deaths += 1
-	_tmp = get_tree().change_scene(current_level) # Resets to current playing level
+	PlayerStats.deaths += 1 # Increases death variable by one
+	if current_level == "res://new_level.tscn": # Checks if loaded from save state
+		_tmp = get_tree().change_scene(PlayerStats.next_level) # Gets full level
+	else:
+		_tmp = get_tree().change_scene(current_level) # Resets to current playing level
 
 # Makes the player jump when touching the enemy stomp collision area (not used since gun added)
 func _on_Enemy_Detection_area_entered(_area) -> void:

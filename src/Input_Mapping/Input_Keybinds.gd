@@ -37,7 +37,7 @@ func _ready():
 		button.key   = key
 		button.value = button_value
 		button.menu  = self
-		
+
 		button.toggle_mode = true
 		button.focus_mode  = Control.FOCUS_NONE
 
@@ -66,4 +66,4 @@ func _on_Save_Config_pressed():
 	PlayerStats.keybinds = keybinds.duplicate() # Duplicates keybind dictionary from PlayerStats
 	PlayerStats.set_key_binds() # Calls global script to set new keybinds
 	PlayerStats.write_config() # Writes new keybinds to configuration file
-	get_node("Button Container/Save Config").text = "Keybinds Saved!" # Changes text to inform player that keybinds are saved
+	get_node("Button Container/Save_Config").text = "Keybinds Saved!" # Changes text to inform player that keybinds are saved

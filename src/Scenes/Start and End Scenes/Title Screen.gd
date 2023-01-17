@@ -1,10 +1,8 @@
 extends Control
 
 # Variables for loading lastest save game
-var file: File = File.new()
+var file: String = PlayerStats.get_latest_enc_pass("user://saves/")
 
 # Is called when when is lifted
 func _on_Continue_button_up():
-	if file.open(PlayerStats.save_path, File.READ) == OK: # Checks that file could be opened correctly
-		print(file.READ)
-	get_node("Button Container/Continue").text = PlayerStats.load_game() # Loaded save game, updates button text
+	get_node("Button Container/Continue").text = PlayerStats.load_game(file) # Loaded save game, updates button text

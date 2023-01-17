@@ -40,10 +40,10 @@ margin_bottom = 105.0
 text = "Back to Settings"
 next_scene_path = "res://src/Settings and Pause Menus/Settings.tscn"
 
-[node name="Save Config" type="Button" parent="Button Container"]
+[node name="Save_Config" type="Button" parent="Button Container"]
 margin_top = 109.0
 margin_right = 251.0
 margin_bottom = 129.0
 text = "Save Keybinds"
 
-[connection signal="pressed" from="Button Container/Save Config" to="." method="_on_Save_Config_pressed"]
+[connection signal="pressed" from="Button Container/Save_Config" to="." method="_on_Save_Config_pressed"]

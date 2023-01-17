@@ -13,6 +13,7 @@ var level_score: int = 0 setget set_score
 var deaths:      int = 0 setget set_death 
 var bullets:     int = 8 setget set_bullets
 
+# For loading nect level, will change if save is loaded
 var next_level: String = "res://src/Scenes/Level_0.tscn"
 
 # Variables for HUD
@@ -69,17 +70,23 @@ func _ready() -> void:
 			else:
 				keybinds[key] = null
 	else: # Config file has not loaded correctly
-		print(configfile.load(keybind_filepath)) # Outputs standard error
-		get_tree().quit(-1) # Quits game with error code
-	
-	set_key_binds() # Calls function to set keybinds to the game
+		# Outputs standard error
+		print(configfile.load(keybind_filepath))
+
+		# Quits game with error code
+		get_tree().quit(-1) 
+
+	 # Calls function to set keybinds to the game
+	set_key_binds()
 
 # Is called every frame, delta variable is time imbetween frames
 func _physics_process(_delta) -> void:
 	if get_tree().current_scene.filename in levels_list: # Checks for if current scene is in list of levels
-		get_node("Hud/Label").text = "Ammo: %s" % (bullets) # Places HUD onto screen
+		# Places HUD onto screen
+		get_node("Hud/Label").text = "Ammo: %s" % (bullets)
 	else:
-		get_node("Hud/Label").text = "" # Removes HUD from screen if not a level
+		# Removes HUD from screen if not a level
+		get_node("Hud/Label").text = ""
 
 # For checking inputs during play in the game
 func _input(_event) -> void:
@@ -90,7 +97,10 @@ func _input(_event) -> void:
 		# Pauses processing time for the game
 		get_tree().paused = true
 	if Input.is_action_just_pressed("reload") and bullets != 8: # Checks for if reload key is pressed
-		bullets = 8 # Resets bullets to 8
+		# Resets bullets to 8
+		bullets = 8 
+		
+		# Plays reload sound effect
 		get_node("Reload").play()
 
 # For setting the keybinds to the game
@@ -167,7 +177,7 @@ func save_game() -> String:
 
 	# Updating save path and encryption password
 	save_path = dir_path + current_time + file_ext
-
+	
 	encryption_password = current_time # Updates encryption password
 
 	# Saving game with encryption so player cannot cheat and change values in save file
@@ -181,14 +191,14 @@ func save_game() -> String:
 	return "Game Saved" # Returns text for button to change to
 
 # Loading game saves
-func load_game() -> String:
+func load_game(passed_file) -> String:
 	var file: = File.new() # Creates new file type
 	var new_load_data: Dictionary # Creates new dictionary type
 	var text: String # Creates new String variable
 
 	# Updating opening values
-	save_path           = dir_path + get_latest_enc_pass(dir_path) + file_ext
-	encryption_password = get_latest_enc_pass(dir_path)
+	save_path           = dir_path + passed_file + file_ext
+	encryption_password = passed_file
 
 
 	if file.file_exists(save_path): # Checks save file exists
@@ -222,6 +232,32 @@ func error_occured(thing_that_has_gone_wrong, error) -> void:
 	printerr("%s: had error %s" % ([thing_that_has_gone_wrong, error])) # Outputs error with passed in values
 	get_tree().quit(-1) # Quits with error code
 
+func quicksort(list) -> Array:
+	var list_length = len(list) # Length of list
+	
+	# Break from recursion loop
+	if list_length <= 1:
+		return list # Returns one length list
+	
+	# Pivot Variables
+	var pivot_number = rand_range(0, list_length-1) # Gets random list location
+	var pivot        = list[pivot_number] # gets pivot value
+	
+	# For higher and lower numbers
+	var lower = []
+	var upper = []
+	
+	# Filtering from pivot
+	for num in list:
+		if num < pivot:
+			lower.append(num)
+		if num >= pivot:
+			upper.append(num)
+
+	# Returns sorted list by calling same function on new upper and lower lists
+	return quicksort(upper) + quicksort(lower)
+
+# Gets lastest Save
 func get_latest_enc_pass(path) -> String:
 	var files = [] # For files in directory
 	var nums  = [] # For file names
@@ -256,6 +292,52 @@ func get_latest_enc_pass(path) -> String:
 			out = i
 
 	return str(out) # Returns latest save
+
+# Gets the three most recent saves
+func get_three_save(path) -> Array:
+	var files = [] # For files in directory
+	var nums  = [] # For file names
+
+	var enc_dir = Directory.new() # For accessing directory files in a listed method
+
+	var out: Array = [] # Output variable, will be returned from function
+
+	#warning-ignore:return_value_discarded
+	dir.open(path) # Opens path that is passed through
+
+	# warning-ignore:return_value_discarded
+	dir.list_dir_begin() # Starts listing directory
+
+	# For getting all files from directory
+	while true:
+		var file = dir.get_next() # Gets next file in file list
+		if file == "": # Checks if end of directory
+			break # Stops loop
+		elif not file.begins_with("."): # Does not add hidden files to list
+			files.append(file) # Appends file to file list
+
+	enc_dir.list_dir_end() # For stopping the list of directory files
+
+	# For getting numbers from file names
+	for file in files:
+		nums.append(int(file.split(".")[0])) # Only gets name of file, removes file ext
+
+	# Sorts list of saves
+	var sorted_list = quicksort(nums)
+	
+	# Print output for debugging
+	print("Sorted List: ", sorted_list)
+	
+	# Output variable
+	out = []
+	
+	# Going through list to get first three
+	for file in sorted_list:
+		if len(out) > 3:
+			break
+		out.append(file)
+		
+	return out # Returns latest save
 
 # Sets level score when called 
 func set_score(value: int) -> void:
